@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,9 +11,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.amber,
+        accentColor: Colors.green,
+        textTheme: TextTheme(
+          bodyText2: TextStyle(color: Colors.purple),
+        ),
       ),
-      home: MyHomePage(title: 'Wanwaree Sinthu'),
+      initialRoute: '/fourth',
+      routes: <String, WidgetBuilder>{
+        '/first': (context) => FirstPage(),
+        '/second': (context) => SecondPage(),
+        '/third': (context) => ThirdPage(),
+        '/fourth': (context) => FourthPage(),
+      },
     );
   }
 }
@@ -48,7 +59,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            catOnShow,
+            Container(
+                height: 150.0,
+                width: 150.0,
+                margin: EdgeInsets.only(bottom: 50.0),
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: catOnShow),
             Text(
               'You have pushed the button this many times:',
             ),
@@ -98,5 +118,157 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     throw UnimplementedError();
+  }
+}
+
+class FirstPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Page'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.fingerprint),
+            tooltip: 'Butto1',
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.bungalow),
+            tooltip: 'button 2',
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text('First Page'),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: Table(
+          children: [
+            TableRow(
+              children: [
+                Container(
+                    margin: EdgeInsets.all(1.0),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade300,
+                    ),
+                    child: Text('ID')),
+                Container(
+                    margin: EdgeInsets.all(1.0),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade300,
+                    ),
+                    child: Text('Name')),
+                Container(
+                    margin: EdgeInsets.all(1.0),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade300,
+                    ),
+                    child: Text('Gender')),
+              ],
+            ),
+            TableRow(
+              children: [
+                Text('1'),
+                Text('Wanwaree'),
+                Text('Female'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ThirdPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Third Page'),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(Icons.cloud),
+              ),
+              Tab(
+                icon: Icon(Icons.shower),
+              ),
+              Tab(
+                icon: Icon(Icons.wb_sunny),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Center(
+              child: Text('Cloudy'),
+            ),
+            Center(
+              child: Text('Rainy'),
+            ),
+            Center(
+              child: Text('Sunny'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FourthPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final List<String> entries = <String>[
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K'
+    ];
+    final List<int> colorCodes = <int>[600, 500, 100];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Fourth Page'),
+      ),
+      body: ListView.separated(
+        padding: EdgeInsets.all(8.0),
+        itemCount: entries.length,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 100.0,
+            color: Colors.amber[colorCodes[index % 3]],
+            child: Center(
+              child: Text('Entry ${entries[index]}'),
+            ),
+          );
+        },
+        separatorBuilder: (context, int) => Divider(),
+      ),
+    );
   }
 }
