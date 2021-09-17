@@ -20,6 +20,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/popcat1.png
-    - assets/popcat2.png
+     - assets/popcat1.png
+     - assets/popcat2.png
  
