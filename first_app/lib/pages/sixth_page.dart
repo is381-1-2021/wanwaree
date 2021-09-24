@@ -1,3 +1,5 @@
+import 'package:first_app/models/form_models.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class SixthPage extends StatelessWidget {
@@ -43,53 +45,60 @@ class _MyCustomFormState extends State<MyCustomForm> {
             onSaved: (value) {
               _firstname = value!;
             },
+            initialValue: context.read<FormModel>().firstName,
           ),
           TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.family_restroom),
-                hintText: 'Your last name',
-                labelText: 'Last Name',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter lastname.';
-                }
-              },
-              onSaved: (value) {
-                _lastname = value!;
-              }),
+            decoration: InputDecoration(
+              icon: Icon(Icons.family_restroom),
+              hintText: 'Your last name',
+              labelText: 'Last Name',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter lastname.';
+              }
+            },
+            onSaved: (value) {
+              _lastname = value!;
+            },
+            initialValue: context.read<FormModel>().lastName,
+          ),
           TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.speed),
-                hintText: 'Your age',
-                labelText: 'Age',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter age.';
-                }
+            decoration: InputDecoration(
+              icon: Icon(Icons.speed),
+              hintText: 'Your age',
+              labelText: 'Age',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter age.';
+              }
 
-                try {
-                  if (int.parse(value) < 15) {
-                    return 'Please enter valid age => 15+';
-                  }
-                } catch (e) {
-                  return 'Please enter number only';
+              try {
+                if (int.parse(value) < 15) {
+                  return 'Please enter valid age => 15+';
                 }
-                var a = null;
-                var b = '';
-              },
-              onSaved: (value) {
-                _age = int.parse(value!);
-              }),
+              } catch (e) {
+                return 'Please enter number only';
+              }
+              var a = null;
+              var b = '';
+            },
+            onSaved: (value) {
+              _age = int.parse(value!);
+            },
+            initialValue: context.read<FormModel>().age.toString(),
+          ),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
 
-                var response = 'Processing $_firstname $_lastname $_age';
+                context.read<FormModel>().firstName = _firstname;
+                context.read<FormModel>().lastName = _lastname;
+                context.read<FormModel>().age = _age;
 
-                Navigator.pop(context, response);
+                Navigator.pop(context);
               }
             },
             child: Text('Submit'),
