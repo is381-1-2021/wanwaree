@@ -1,113 +1,109 @@
+import 'package:midterm_app/pages/form.dart';
+import 'package:midterm_app/pages/formemail.dart';
+import 'package:midterm_app/pages/blank_page.dart';
 import 'package:flutter/material.dart';
+import 'pages/flash_card.dart';
+import 'pages/profile.dart';
+//import 'pages/pages_name.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
+        accentColor: Colors.lightBlue.shade100,
+        textTheme: TextTheme(
+          bodyText2: TextStyle(color: Colors.black87),
+        ),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/5',
+      routes: <String, WidgetBuilder>{
+        '/1': (context) => Profile(),
+        '/2': (context) => FlashCard(),
+        '/3': (context) => EditProfile(),
+        '/4': (context) => EditEmail(),
+        '/5': (context) => All(),
+        '/6': (context) => BlankPage(),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class All extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _AllState createState() => _AllState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class _AllState extends State<All> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('Main Menu'),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+      body: Container(
+        padding: EdgeInsets.all(8.0),
+        child: GridView.count(
+          crossAxisCount: 2,
+          children: [
+            MenuButton(caption: 'Profile', icontype: Icons.person, goto: '/1'),
+            MenuButton(
+                caption: 'My Flashcards',
+                icontype: Icons.credit_card,
+                goto: '/2'),
+            MenuButton(
+                caption: 'Edit Username', icontype: Icons.edit, goto: '/3'),
+            MenuButton(
+                caption: 'Edit E-mail', icontype: Icons.edit, goto: '/4'),
+            MenuButton(caption: 'Main Menu', icontype: Icons.menu, goto: '/5'),
+            MenuButton(
+                caption: 'Bank Page',
+                icontype: Icons.add_box_rounded,
+                goto: '/6'),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      backgroundColor: Colors.grey[200],
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  MenuButton({this.caption, this.icontype, this.goto});
+
+  final String? caption;
+  final IconData? icontype;
+  final String? goto;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(10.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, goto!);
+        },
+        splashColor: Colors.lightBlue,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icontype,
+                size: 60.0,
+                color: Colors.lightBlue[200],
+              ),
+              Text(caption!,
+                  style: TextStyle(fontSize: 18.0, color: Colors.lightBlue))
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -24,6 +24,13 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flip_card: ^0.5.0
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  android: true
+  image_path: "assets/icon_app.jpg"
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -38,11 +45,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+  assets:
+      - assets/seal.jpg
+      - assets/pic.jpg
+      - assets/sky.jpg
+      - assets/bg.jpg
+      - assets/icon_app.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
