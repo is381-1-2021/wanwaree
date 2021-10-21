@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-class ProfileBox extends StatelessWidget {
+class ProfileBox extends StatefulWidget {
   String title;
   String data;
 
   ProfileBox(this.title, this.data);
 
   @override
+  _ProfileBoxState createState() => _ProfileBoxState();
+}
+
+class _ProfileBoxState extends State<ProfileBox> {
+  @override
   Widget build(BuildContext context) {
     return Container(
+        child: Container(
       padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(color: Colors.white),
       height: 60,
@@ -16,12 +22,12 @@ class ProfileBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            title,
+            widget.title,
             style: TextStyle(fontSize: 22, color: Colors.black87),
           ),
           Expanded(
             child: Text(
-              data,
+              widget.data,
               style: TextStyle(fontSize: 20, color: Colors.blueAccent),
               textAlign: TextAlign.right,
             ),
@@ -33,6 +39,6 @@ class ProfileBox extends StatelessWidget {
           ))
         ],
       ),
-    );
+    ));
   }
 }

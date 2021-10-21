@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:flashcard/model/form_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'profilebox.dart';
 
 class Profile extends StatefulWidget {
@@ -7,6 +10,11 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String? _message = 'Wanwaree';
+  String? _lastName = 'Sithu';
+  String? _email = 'wanwaree@hotmail.com';
+  String? _password = '0123456';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,35 +36,66 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(200.0),
-                      child: Image.asset(
-                        'assets/pic.jpg',
-                        width: 150,
+                    GestureDetector(
+                      onTap: () {},
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(200.0),
+                        child: Image.asset(
+                          'assets/pic.jpg',
+                          width: 150,
+                        ),
                       ),
                     ),
-                    Expanded(
-                      child: Text(
-                        "Choose Picture",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
                   ],
                 )),
-            ProfileBox("Username", "Wanwaree Sinthu"),
+            GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Consumer<FormModel>(
+                    builder: (context, model, child) {
+                      return ProfileBox("First Name", "${model.Username}");
+                    },
+                  ),
+                ),
+                onTap: () async {
+                  Navigator.pushNamed(context, '/3');
+                }),
             SizedBox(
               height: 5,
             ),
-            ProfileBox("Email", "wanwaree@hotmail.com"),
+            GestureDetector(
+                child: ProfileBox("Last Name", "$_lastName"),
+                onTap: () async {
+                  var response = await Navigator.pushNamed(context, '/3');
+                  setState(() {
+                    _lastName = response.toString();
+                  });
+                }),
             SizedBox(
               height: 5,
             ),
-            ProfileBox("About", ""),
+            GestureDetector(
+                child: ProfileBox("Email", "$_email"),
+                onTap: () async {
+                  var response = await Navigator.pushNamed(context, '/4');
+                  setState(() {
+                    _email = response.toString();
+                  });
+                }),
             SizedBox(
               height: 5,
             ),
-            ProfileBox("Setting", ""),
+            GestureDetector(
+                child: ProfileBox("Password", ""),
+                onTap: () async {
+                  var response = await Navigator.pushNamed(context, '/4');
+                  setState(() {
+                    _password = response.toString();
+                  });
+                }),
+            SizedBox(
+              height: 5,
+            ),
           ],
         ),
       ),

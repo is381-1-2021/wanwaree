@@ -35,7 +35,7 @@ class _FirstPageState extends State<FirstPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Consumer<FormModel>(
-                builder: (cotext, model, child) {
+                builder: (context, model, child) {
                   return Text(
                       'First Page - ${model.firstName} ${model.lastName} ${model.age}');
                 },

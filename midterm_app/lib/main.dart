@@ -96,7 +96,7 @@ class MenuButton extends StatelessWidget {
               Icon(
                 icontype,
                 size: 60.0,
-                color: Colors.lightBlue[200],
+                color: Colors.lightBlue[300],
               ),
               Text(caption!,
                   style: TextStyle(fontSize: 18.0, color: Colors.lightBlue))

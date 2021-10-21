@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:midterm_app/main.dart';
 import 'package:midterm_app/pages/card_storage.dart';
 import 'package:midterm_app/pages/flashbox.dart';
 import 'package:flip_card/flip_card.dart';
@@ -18,8 +20,9 @@ class _FlashCardState extends State<FlashCard> {
             "What country gifted the United States with the Statue of Liberty?",
         data2: "France")
   ];
-
+  int number = 1;
   int _currentIndex = 0;
+  double progress = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,21 @@ class _FlashCardState extends State<FlashCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                '$number/${_cards.length}',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 5),
+              SizedBox(
+                width: 200,
+                height: 10,
+                child: LinearProgressIndicator(
+                  value: progress,
+                  valueColor: AlwaysStoppedAnimation(Colors.orange[200]),
+                  backgroundColor: Colors.white,
+                ),
+              ),
+              SizedBox(height: 5),
               SizedBox(
                   width: 300,
                   height: 350,
@@ -67,16 +85,55 @@ class _FlashCardState extends State<FlashCard> {
 //เลื่อนไปดู flashcard อันถัดไป
   void Next() {
     setState(() {
-      _currentIndex =
-          (_currentIndex + 1 < _cards.length) ? _currentIndex + 1 : 0;
+      if (_currentIndex + 1 >= _cards.length) {
+        progress = (_currentIndex + 1) / _cards.length;
+        End();
+      } else {
+        _currentIndex = _currentIndex + 1;
+        number = number + 1;
+        progress = (_currentIndex + 1) / _cards.length;
+      }
     });
   }
 
 //ย้อนมาดู flashcard อันก่อนหน้า
   void Previous() {
     setState(() {
-      _currentIndex =
-          (_currentIndex - 1 >= _cards.length) ? _currentIndex - 1 : 0;
+      if (_currentIndex - 1 < 0) {
+        _currentIndex = 0;
+      } else {
+        _currentIndex = _currentIndex - 1;
+        number = number - 1;
+        progress = (_currentIndex + 1) / _cards.length;
+      }
     });
   }
+
+  void End() {
+    showCupertinoDialog(
+      context: context,
+      builder: createDialog,
+    );
+  }
+
+  Widget createDialog(BuildContext context) => CupertinoAlertDialog(
+        title: Text(
+          'You have checked all words.',
+          style: TextStyle(fontSize: 22),
+        ),
+        content: Text(
+          'Do you want to start it again?',
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          CupertinoDialogAction(
+              child: Text('OK'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/2', ModalRoute.withName('/5'))),
+          CupertinoDialogAction(
+              child: Text('Exit'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/5', (route) => false)),
+        ],
+      );
 }

@@ -25,7 +25,7 @@ class _FlashCardState extends State<FlashCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Vocab"),
+        title: Text("My Flashcard"),
       ),
       body: Center(
         child: Padding(
@@ -50,10 +50,10 @@ class _FlashCardState extends State<FlashCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                      onPressed: showPrevious,
+                      onPressed: Previous,
                       child: Icon(Icons.chevron_left, color: Colors.white)),
                   ElevatedButton(
-                      onPressed: showNext,
+                      onPressed: Next,
                       child: Icon(Icons.chevron_right, color: Colors.white))
                 ],
               )
@@ -64,14 +64,14 @@ class _FlashCardState extends State<FlashCard> {
     );
   }
 
-  void showNext() {
+  void Next() {
     setState(() {
       _currentIndex =
           (_currentIndex + 1 < _cards.length) ? _currentIndex + 1 : 0;
     });
   }
 
-  void showPrevious() {
+  void Previous() {
     setState(() {
       _currentIndex =
           (_currentIndex - 1 >= _cards.length) ? _currentIndex - 1 : 0;
