@@ -1,4 +1,4 @@
-import 'package:first_app/controllers/todo_controllers.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app/models/form_models.dart';
 import 'package:first_app/pages/eight_page.dart';
 import 'package:first_app/pages/todo_page.dart';
@@ -6,6 +6,7 @@ import 'package:first_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/todo_controller.dart';
 import 'pages/fifth_page.dart';
 import 'pages/first_page.dart';
 import 'pages/fourth_page.dart';
@@ -14,8 +15,11 @@ import 'pages/seventh_page.dart';
 import 'pages/sixth_page.dart';
 import 'pages/third_page.dart';
 
-void main() {
-  var services = HttpServices();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  var services = FirebaseServices();
   var controller = TodoController(services);
 
   runApp(TodoApp(controller: controller));

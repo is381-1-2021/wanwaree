@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "217039000349",
+    "project_id": "is381-2021-flashcard",
+    "storage_bucket": "is381-2021-flashcard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217039000349:android:18903f91d352af902807f4",
+        "android_client_info": {
+          "package_name": "com.example.first_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217039000349-0kifvsg68l91e6958jb0dkma66mt12t4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbFId4IgQveS5o1Gp2e0l-v2O0zJoCtEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217039000349-0kifvsg68l91e6958jb0dkma66mt12t4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
