@@ -1,42 +1,48 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:midterm_app/controllers/flashcardqa_controller.dart';
+import 'package:midterm_app/pages/6flashcard.dart';
+
 import 'package:midterm_app/pages/9flashbox.dart';
 import 'package:midterm_app/pages/flashcardqa_model.dart';
 import 'package:flutter/material.dart';
+import 'package:midterm_app/pages/listfc_model.dart';
 import 'package:midterm_app/services/flashcardqa_services.dart';
 
-var services = FirebaseServices();
-var controller = FlashcardqaController(services);
-
 class FlashcardqaPage extends StatefulWidget {
-  final FlashcardqaController controller;
-
-  FlashcardqaPage({required this.controller});
   @override
   _FlashcardqaPageState createState() => _FlashcardqaPageState();
 }
 
 class _FlashcardqaPageState extends State<FlashcardqaPage> {
   List<Flashcardqa> flashcardqas = List.empty();
+  List<Listfc> listfcs = List.empty();
   bool isLoading = false;
+  var services = FirebaseServices();
+  var controller;
   int number = 1;
   int _index = 0;
   double progress = 0;
 
   void initState() {
     super.initState();
-
-    widget.controller.onSync.listen(
+    controller = FlashcardqaController(services);
+    controller.onSync.listen(
       (bool syncState) => setState(() => isLoading = syncState),
     );
   }
 
   void _getFlashcardqas() async {
-    var newFlashcardqas = await widget.controller.fetchFlashcardqas();
+    var newFlashcardqas = await controller.fetchFlashcardqas();
 
     setState(() => flashcardqas = newFlashcardqas);
   }
+
+  /*void _getListfcs() async {
+    var newListfcs = await controller.fetchListfcs();
+
+    setState(() => listfcs = newListfcs);
+  }*/
 
   Widget get body => isLoading
       ? CircularProgressIndicator()
@@ -65,55 +71,83 @@ class _FlashcardqaPageState extends State<FlashcardqaPage> {
                 ),
                 body:*/
                 Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '$number/${flashcardqas.length}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 5),
-                            SizedBox(
-                              width: 200,
-                              height: 10,
-                              child: LinearProgressIndicator(
-                                value: progress,
-                                valueColor:
-                                    AlwaysStoppedAnimation(Colors.orange[200]),
-                                backgroundColor: Colors.white,
+              child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 25),
+                      Text(
+                        '$number/${flashcardqas.length}',
+                        style: TextStyle(fontSize: 16, fontFamily: "Nunito"),
+                      ),
+                      SizedBox(height: 15),
+                      SizedBox(
+                        width: 250,
+                        height: 10,
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          valueColor:
+                              AlwaysStoppedAnimation(Colors.orange[200]),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      SizedBox(
+                          width: 300,
+                          height: 350,
+                          child: FlipCard(
+                              front: FlashcardBox(
+                                vocab: flashcardqas[_index].question,
+                              ),
+                              back: FlashcardBox(
+                                vocab: flashcardqas[_index].answer,
+                              ))),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            child: ElevatedButton(
+                              onPressed: Previous,
+                              child: Text(
+                                'Prev',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                ),
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                elevation: 4,
                               ),
                             ),
-                            SizedBox(height: 5),
-                            SizedBox(
-                                width: 300,
-                                height: 350,
-                                child: FlipCard(
-                                    front: FlashcardBox(
-                                      vocab: flashcardqas[_index].question,
-                                    ),
-                                    back: FlashcardBox(
-                                      vocab: flashcardqas[_index].answer,
-                                    ))),
-                            SizedBox(
-                              height: 8,
+                          ),
+                          SizedBox(
+                            child: ElevatedButton(
+                              onPressed: Next,
+                              child: Text(
+                                'Next',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                ),
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                elevation: 4,
+                              ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ElevatedButton(
-                                    onPressed: Previous,
-                                    child: Icon(Icons.chevron_left,
-                                        color: Colors.white)),
-                                ElevatedButton(
-                                    onPressed: Next,
-                                    child: Icon(Icons.chevron_right,
-                                        color: Colors.white))
-                              ],
-                            )
-                          ],
-                        )));
+                          )
+                        ],
+                      ),
+                    ],
+                  )),
+            );
           },
         );
 
@@ -154,17 +188,21 @@ class _FlashcardqaPageState extends State<FlashcardqaPage> {
   Widget createDialog(BuildContext context) => CupertinoAlertDialog(
         title: Text(
           'You have checked all words.',
-          style: TextStyle(fontSize: 22),
+          style: TextStyle(fontSize: 22, fontFamily: "Nunito"),
         ),
         content: Text(
           'Do you want to start it again?',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, fontFamily: "Nunito"),
         ),
         actions: [
           CupertinoDialogAction(
-            child: Text('OK'),
-            onPressed: () {},
-          )
+              child: Text('OK'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/9', ModalRoute.withName('/Home'))),
+          CupertinoDialogAction(
+              child: Text('Exit'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/Home', (route) => false)),
         ],
       );
 
@@ -179,6 +217,10 @@ class _FlashcardqaPageState extends State<FlashcardqaPage> {
         onPressed: _getFlashcardqas,
         child: Icon(Icons.play_arrow),
       ),
+      /*ElevatedButton(
+        onPressed: _getListfcs,
+        child: Icon(Icons.play_arrow),
+      ),*/
     );
   }
 }

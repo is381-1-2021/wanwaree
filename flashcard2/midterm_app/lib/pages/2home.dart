@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/model/formModel.dart';
 import 'package:midterm_app/pages/0NaviBar.dart';
 import 'package:midterm_app/pages/6flashcard.dart';
+import 'package:midterm_app/pages/stackofcard_model.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
