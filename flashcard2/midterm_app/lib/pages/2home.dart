@@ -138,6 +138,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+              /*FloatingActionButton(
+                onPressed: () => Navigator.pushNamed(context, '/8'),
+                child: Icon(Icons.add),
+              ),*/
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(30),
@@ -148,9 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       image: AssetImage("assets/images/cards_bg.png"),
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      Row(
+                  child: Column(children: [
+                    /*Row(
                         children: [
                           Text(
                             "Your Flash Cards ",
@@ -158,34 +161,38 @@ class _MyHomePageState extends State<MyHomePage> {
                                 fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                         ],
+                      ),*/
+                    GestureDetector(
+                      child: Container(
+                        child: Text(
+                          'view Flashcards',
+                          style: TextStyle(
+                            fontSize: 25,
+                          ),
+                        ),
                       ),
-                      Consumer<FormModel>(builder: (context, model, child) {
-                        return Expanded(
-                          child: model.cardName.length > 0
-                              ? ListView.builder(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                  itemCount: model.cardName.length,
-                                  itemBuilder: (context, index) {
-                                    return CardTile(
-                                      item: CardItem(
-                                        cardName: model.cardName[index],
-                                        subject: model.subject[index],
-                                      ),
-                                    );
-                                  },
-                                )
-                              : const Center(
-                                  child: Text(
-                                    "No Flash Card",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/8');
+                      },
+                    ),
+                    Consumer<FormModel>(
+                      builder: (context, model, child) {
+                        return GestureDetector(
+                          child: Container(
+                            child: Text(
+                              'view Flashcards',
+                              style: TextStyle(
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/8');
+                          },
                         );
-                      }),
-                    ],
-                  ),
+                      },
+                    )
+                  ]),
                 ),
               ),
             ],

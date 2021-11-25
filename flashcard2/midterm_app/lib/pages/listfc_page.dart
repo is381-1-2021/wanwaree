@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:midterm_app/controllers/listfc_controller.dart';
+import 'package:midterm_app/model/formModel.dart';
+import 'package:midterm_app/pages/flashcardqa_model.dart';
 //import 'package:midterm_app/model/formModel.dart';
-import 'package:midterm_app/pages/6flashcard.dart';
+//import 'package:midterm_app/pages/6flashcard.dart';
 import 'package:midterm_app/pages/listfc_model.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/services/flashcardqa_services.dart';
@@ -24,21 +26,8 @@ class _ListfcPageState extends State<ListfcPage> {
 
   double progress = 0;
 
-  int _pageState = 0;
-
-  double _popupWidth = 0;
-  double _popupHeight = 0;
-
-  double _popupYOffset = 0;
-  double _popupXOffset = 0;
-
   double wdWidth = 0;
   double wdheight = 0;
-
-  final _formkey3 = GlobalKey<FormState>();
-  Formqa fcqanda = Formqa();
-  CollectionReference _fcqandaCollection =
-      FirebaseFirestore.instance.collection("fc_flashcardqa");
 
   void initState() {
     super.initState();
@@ -66,7 +55,7 @@ class _ListfcPageState extends State<ListfcPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 320.0),
                   child: Text(
-                    "Please click the button to view your all flashcard",
+                    "Please click the button to view all flashcard",
                     style: TextStyle(
                         color: Colors.blue[600],
                         fontSize: 18,
@@ -74,119 +63,6 @@ class _ListfcPageState extends State<ListfcPage> {
                   ),
                 ),
               );
-              /* AnimatedContainer(
-                padding: EdgeInsets.all(32),
-                width: _popupWidth,
-                height: _popupHeight,
-                curve: Curves.fastLinearToSlowEaseIn,
-                duration: Duration(
-                  milliseconds: 1000,
-                ),
-                transform:
-                    Matrix4.translationValues(_popupXOffset, _popupYOffset, 1),
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            'A Card',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Form(
-                          key: _formkey3,
-                          child: Column(
-                            children: <Widget>[
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 5),
-                                  hintText: "Question...",
-                                  icon: Icon(Icons.help),
-                                  labelText: "Enter your Question",
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter your question";
-                                  }
-                                },
-                                onSaved: (question) {
-                                  //context.read<FormModel>().Questions.add(value!);
-                                  fcqanda.question = question;
-                                },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 5),
-                                  hintText: "Answer...",
-                                  icon: Icon(Icons.task_alt),
-                                  labelText: "Enter your answer",
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your answer';
-                                  }
-                                },
-                                onSaved: (answer) {
-                                  /*context.read<FormModel>().Answers.add(value!);*/
-                                  fcqanda.answer = answer;
-                                },
-                              ),
-                              SizedBox(height: 30),
-                              //if (!isKeyboard)
-                              SizedBox(
-                                height: 50,
-                                width: 200,
-                                child: ElevatedButton(
-                                  child: Text("Create "),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(40.0),
-                                    ),
-                                    primary: Color(0xFF38b6ff),
-                                    onPrimary: Colors.white,
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Nunito",
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    if (_formkey3.currentState!.validate()) {
-                                      _formkey3.currentState!.save();
-                                      await _fcqandaCollection.add({
-                                        "question": fcqanda.question,
-                                        "answer": fcqanda.answer
-                                      });
-                                      _formkey3.currentState!.reset();
-                                      setState(() {
-                                        _pageState = 0;
-                                      });
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );*/
             }
 
             return GestureDetector(
@@ -196,267 +72,22 @@ class _ListfcPageState extends State<ListfcPage> {
                 subject: '${listfcs[index].answer}',
               )),
               onDoubleTap: () {
+                // var con = '${listfcs[index].question}';
+                // return cardID.con;
+
                 Navigator.pushNamed(context, '/8');
               },
             );
           },
         );
 
-//เลื่อนไปดู flashcard อันถัดไป
-  void Next() {
-    setState(() {
-      if (_index + 1 >= listfcs.length) {
-        progress = (_index + 1) / listfcs.length;
-        End();
-      } else {
-        _index = _index + 1;
-        number = number + 1;
-        progress = (_index + 1) / listfcs.length;
-      }
-    });
-  }
-
-//ย้อนมาดู flashcard อันก่อนหน้า
-  void Previous() {
-    setState(() {
-      if (_index - 1 < 0) {
-        _index = 0;
-      } else {
-        _index = _index - 1;
-        number = number - 1;
-        progress = (_index + 1) / listfcs.length;
-      }
-    });
-  }
-
-  void End() {
-    showCupertinoDialog(
-      context: context,
-      builder: createDialog,
-    );
-  }
-
-  Widget createDialog(BuildContext context) => CupertinoAlertDialog(
-        title: Text(
-          'You have checked all words.',
-          style: TextStyle(fontSize: 22, fontFamily: "Nunito"),
-        ),
-        content: Text(
-          'Do you want to start it again?',
-          style: TextStyle(fontSize: 16, fontFamily: "Nunito"),
-        ),
-        actions: [
-          CupertinoDialogAction(
-              child: Text('OK'),
-              onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/8', ModalRoute.withName('/Home'))),
-          CupertinoDialogAction(
-              child: Text('Exit'),
-              onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/Home', (route) => false)),
-        ],
-      );
-
   @override
   Widget build(BuildContext context) {
-    /* wdWidth = MediaQuery.of(context).size.width;
-    wdheight = MediaQuery.of(context).size.height;
-    //final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    _popupWidth = wdWidth - 30;
-    _popupHeight = wdheight - 400;
-
-    switch (_pageState) {
-      case 0:
-        _popupYOffset = wdheight;
-        _popupXOffset = 15;
-
-        break;
-
-      case 1:
-        _popupYOffset = 100;
-        _popupXOffset = 15;
-
-        break;
-    }*/
-    return /*DefaultTabController(
-        length: 3,
-        child: */
-        Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('HTTP Listfcs'),
-        /*actions: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (_pageState != 0) {
-                      _pageState = 0;
-                    } else {
-                      _pageState = 1;
-                    }
-                  });
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              ),
-            ],*/
-        /**/
       ),
-      body: Center(child: body)
-      /*Stack(children: [
-            Column(children: [
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 60,
-                    width: 300,
-                    child: ElevatedButton(
-                      child: Text("Create a card"),
-                      style: ElevatedButton.styleFrom(
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(40.0),
-                        ),
-                        primary: Colors.blue[400],
-                        onPrimary: Colors.white,
-                        elevation: 0,
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Nunito",
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          if (_pageState != 0) {
-                            _pageState = 0;
-                          } else {
-                            _pageState = 1;
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ]),
-            AnimatedContainer(
-              padding: EdgeInsets.all(32),
-              width: _popupWidth,
-              height: _popupHeight,
-              curve: Curves.fastLinearToSlowEaseIn,
-              duration: Duration(
-                milliseconds: 1000,
-              ),
-              transform:
-                  Matrix4.translationValues(_popupXOffset, _popupYOffset, 1),
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          'A Card',
-                          style: TextStyle(
-                            fontSize: 25,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Form(
-                        key: _formkey3,
-                        child: Column(
-                          children: <Widget>[
-                            TextFormField(
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 5),
-                                hintText: "Question...",
-                                icon: Icon(Icons.help),
-                                labelText: "Enter your Question",
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter your question";
-                                }
-                              },
-                              onSaved: (question) {
-                                //context.read<FormModel>().Questions.add(value!);
-                                fcqanda.question = question;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 5),
-                                hintText: "Answer...",
-                                icon: Icon(Icons.task_alt),
-                                labelText: "Enter your answer",
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your answer';
-                                }
-                              },
-                              onSaved: (answer) {
-                                /*context.read<FormModel>().Answers.add(value!);*/
-                                fcqanda.answer = answer;
-                              },
-                            ),
-                            SizedBox(height: 30),
-                            //if (!isKeyboard)
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: ElevatedButton(
-                                child: Text("Create "),
-                                style: ElevatedButton.styleFrom(
-                                  shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(40.0),
-                                  ),
-                                  primary: Color(0xFF38b6ff),
-                                  onPrimary: Colors.white,
-                                  elevation: 0,
-                                  textStyle: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Nunito",
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  if (_formkey3.currentState!.validate()) {
-                                    _formkey3.currentState!.save();
-                                    await _fcqandaCollection.add({
-                                      "question": fcqanda.question,
-                                      "answer": fcqanda.answer
-                                    });
-                                    _formkey3.currentState!.reset();
-                                    setState(() {
-                                      _pageState = 0;
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ]),*/
-      ,
+      body: Center(child: body),
       floatingActionButton: FloatingActionButton(
         onPressed: _getListfcs,
         child: Icon(Icons.add),
@@ -473,3 +104,132 @@ class Formqa {
 
   Formqa({this.question, this.answer});
 }
+
+class CardItem {
+  final String cardName;
+  final String subject;
+
+  const CardItem({
+    Key? key,
+    required this.cardName,
+    required this.subject,
+  });
+}
+
+class CardTile extends StatelessWidget {
+  final CardItem item;
+  const CardTile({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        margin: EdgeInsets.only(top: 20),
+        height: 130,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          color: Colors.blue[200],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.6),
+              blurRadius: 4,
+              offset: Offset(4, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 3, left: 10),
+                    height: 80,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/cards.png"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(5, 5, 5, 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 5),
+                    Text(
+                      "Q: ${item.cardName}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.blue[900],
+                      ),
+                    ),
+                    Text(
+                      'A : ${item.subject}',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red[800]),
+                    ),
+                    /*Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(
+                              Icons.mail,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {}),
+                      ],
+                    ),*/
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*myAconfirmation(BuildContext context, {required String title, required String content, required VoidCallback ok}) async {
+  showDialog(
+    context: context, 
+    builder: (ctx) {
+      return AlertDialog(
+        title: Text(title),
+        content: Text("Are you sure to delete this flashcard?"),
+        actions: [
+          FlatButton(
+            onPressed: ok,
+            child: Text("confirm"),
+            ),
+            FlatButton(
+            onPressed: () async{
+              Navigator.of(context).pop();
+            },
+            child: Text("cancel"),
+            ),
+        ],
+      );
+    });
+}*/
+
+/*deletefcCard(Fccard fccard, Function fccardDeleted) async {
+  await FirebaseFirestore.instance
+      .collection('fc_flashcardqa')
+      .doc(Flashcardqa.question)
+      .delete();
+}*/
+

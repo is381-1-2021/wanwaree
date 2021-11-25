@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:midterm_app/controllers/stackofcard_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:midterm_app/model/formModel.dart';
 //import 'package:midterm_app/pages/6flashcard.dart';
 import 'package:midterm_app/pages/createflashcard.dart';
 import 'package:midterm_app/pages/stackofcard_model.dart';
@@ -22,7 +23,7 @@ class _StackofcardPageState extends State<StackofcardPage> {
   final _formkey3 = GlobalKey<FormState>();
   Formqa fcqanda = Formqa();
   CollectionReference _stackofcardCollection =
-      FirebaseFirestore.instance.collection("fc_cards");
+      FirebaseFirestore.instance.collection("fc_subcards");
 
   void initState() {
     super.initState();
@@ -74,8 +75,10 @@ class _StackofcardPageState extends State<StackofcardPage> {
                 cardName: '${stackofcards[index].name}',
                 subject: '${stackofcards[index].subject}',
               )),
-              onDoubleTap: () {
-                Navigator.pushNamed(context, '/8');
+              onDoubleTap: () async {
+                //var subid = '${stackofcards[index].subid}';
+                // var response = '${stackofcards[index].subject}';
+                Navigator.pushNamed(context, '/9');
               },
             );
           },

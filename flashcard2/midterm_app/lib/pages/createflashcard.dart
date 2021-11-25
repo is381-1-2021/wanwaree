@@ -39,8 +39,10 @@ class _CreateNewfcState extends State<CreateNewfc> {
 
   final _formkey3 = GlobalKey<FormState>();
   Formqa fcqanda = Formqa();
-  CollectionReference _fcqandaCollection =
-      FirebaseFirestore.instance.collection("fc_flashcardqa");
+  CollectionReference _fcqandaCollection = FirebaseFirestore.instance
+      .collection("fc_subcards")
+      .doc('Zzei3LvulpsixJC3Lh19')
+      .collection("fc_flashcard");
 
   @override
   Widget build(BuildContext context) {

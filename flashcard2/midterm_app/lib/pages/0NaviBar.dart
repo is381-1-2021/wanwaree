@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/model/formModel.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ class Navibar extends StatefulWidget {
 
 class _NavibarState extends State<Navibar> {
   final padding = EdgeInsets.symmetric(horizontal: 20);
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,7 @@ class _NavibarState extends State<Navibar> {
                     text: "Log Out",
                     icon: Icons.exit_to_app,
                     onClicked: () {
+                      FirebaseAuth.instance.signOut();
                       Navigator.pushReplacementNamed(context, '/Login');
                     },
                   ),
@@ -114,23 +117,11 @@ class _NavibarState extends State<Navibar> {
                   Consumer<FormModel>(
                     builder: (context, model, child) {
                       return Text(
-                        "${model.firstName} ${model.lastName}",
+                        auth.currentUser!.email == null
+                            ? "not login"
+                            : auth.currentUser!.email!,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Consumer<FormModel>(
-                    builder: (context, model, child) {
-                      return Text(
-                        "${model.email}",
-                        style: TextStyle(
-                          fontSize: 14,
                           color: Colors.white,
                         ),
                       );

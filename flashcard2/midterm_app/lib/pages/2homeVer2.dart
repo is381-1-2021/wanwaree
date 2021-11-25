@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/model/formModel.dart';
 import 'package:midterm_app/pages/0NaviBar.dart';
@@ -6,12 +7,12 @@ import 'package:midterm_app/pages/6flashcard.dart';
 import 'package:midterm_app/pages/stackofcard_model.dart';
 import 'package:provider/provider.dart';
 
-class MyHomePage2 extends StatefulWidget {
+class MyHomePage3 extends StatefulWidget {
   @override
-  _MyHomePage2State createState() => _MyHomePage2State();
+  _MyHomePage3State createState() => _MyHomePage3State();
 }
 
-class _MyHomePage2State extends State<MyHomePage2> {
+class _MyHomePage3State extends State<MyHomePage3> {
   int _pageState = 0;
 
   double _popupWidth = 0;
@@ -26,7 +27,9 @@ class _MyHomePage2State extends State<MyHomePage2> {
   final _formkey3 = GlobalKey<FormState>();
   Formcard stackofcard = Formcard();
   CollectionReference _stackofcardCollection =
-      FirebaseFirestore.instance.collection("fc_cards");
+      FirebaseFirestore.instance.collection("fc_subcards");
+
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,9 @@ class _MyHomePage2State extends State<MyHomePage2> {
                       Consumer<FormModel>(
                         builder: (context, model, child) {
                           return Text(
-                            "${model.firstName} ${model.lastName}",
+                            auth.currentUser!.email == null
+                                ? "not login"
+                                : auth.currentUser!.email!,
                             style: TextStyle(
                               fontSize: 30,
                               color: Colors.black,
@@ -163,28 +168,30 @@ class _MyHomePage2State extends State<MyHomePage2> {
                         ],
                       ),
                       Consumer<FormModel>(builder: (context, model, child) {
-                        return Expanded(
-                          child: model.cardName.length > 0
-                              ? ListView.builder(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                  itemCount: model.cardName.length,
-                                  itemBuilder: (context, index) {
-                                    return CardTile(
-                                      item: CardItem(
-                                        cardName: model.cardName[index],
-                                        subject: model.subject[index],
-                                      ),
-                                    );
-                                  },
-                                )
-                              : const Center(
-                                  child: Text(
-                                    "No Flash Card",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
+                        return GestureDetector(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 20),
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                color: Colors.blue[200],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            child:
+                                /*Text(
+                              'View Flashcards',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),*/
+                                Icon(
+                              Icons.description_rounded,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/11');
+                          },
                         );
                       }),
                     ],
@@ -283,10 +290,12 @@ class _MyHomePage2State extends State<MyHomePage2> {
                                 onPressed: () async {
                                   if (_formkey3.currentState!.validate()) {
                                     _formkey3.currentState!.save();
-                                    await _stackofcardCollection.add({
+                                    final docRef =
+                                        await _stackofcardCollection.add({
                                       "name": stackofcard.name,
-                                      "subject": stackofcard.subject
+                                      "subject": stackofcard.subject,
                                     });
+
                                     _formkey3.currentState!.reset();
                                     setState(() {
                                       _pageState = 0;
@@ -437,3 +446,11 @@ class CardTile extends StatelessWidget {
     );
   }
 }
+
+
+/* DocumentReference documentReference =
+      FirebaseFirestore.instance.collection('fc_subcards').doc();
+      //var docRef = docRef.docID;
+      documentReference.set({
+        'id': documentReference.docID
+      });*/

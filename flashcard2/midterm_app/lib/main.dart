@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/model/formModel.dart';
@@ -13,13 +14,15 @@ import 'package:midterm_app/pages/7notification.dart';
 import 'package:midterm_app/pages/8settings.dart';
 import 'package:midterm_app/pages/9flash_card.dart';
 import 'package:midterm_app/pages/createflashcard.dart';
+import 'package:midterm_app/pages/createqa_in_sub.dart';
 import 'package:midterm_app/pages/editEmail.dart';
 import 'package:midterm_app/pages/editFirstName.dart';
 import 'package:midterm_app/pages/editLastName.dart';
 import 'package:midterm_app/pages/editPassword.dart';
 import 'package:midterm_app/pages/flashcardqa_page.dart';
 import 'package:midterm_app/pages/listfc_page.dart';
-import 'package:midterm_app/pages/stackofcard_model.dart';
+import 'package:midterm_app/pages/login.dart';
+import 'package:midterm_app/pages/profile.dart';
 import 'package:midterm_app/pages/stackofcard_page.dart';
 
 import 'package:provider/provider.dart';
@@ -43,15 +46,24 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        context.read<FormModel>().islogin = false;
+      } else {
+        print('User is signed in!');
+        context.read<FormModel>().islogin = true;
+      }
+    });
     return MaterialApp(
       theme: ThemeData(
         fontFamily: "Nunito",
       ),
       debugShowCheckedModeBanner: false,
-      home: MyHomePage2(),
+      home: MyHomePage3(),
       routes: {
-        '/Login': (context) => LoginPage(),
-        '/Home': (context) => MyHomePage2(),
+        '/Login': (context) => LoginPage2(),
+        '/Home': (context) => MyHomePage3(),
         '/Profile': (context) => ProfilePage(),
         '/Favorite': (context) => FavoritePage(),
         '/Search': (context) => SearchPage(),
@@ -67,6 +79,7 @@ class MyApp extends StatelessWidget {
         '/9': (context) => ListfcPage(),
         '/10': (context) => CreateCardPage(),
         '/11': (context) => StackofcardPage(),
+        //'/12': (context) => CreateQAinSubPage(),
       },
     );
   }

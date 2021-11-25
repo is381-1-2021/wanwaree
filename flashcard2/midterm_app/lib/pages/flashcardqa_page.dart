@@ -198,7 +198,7 @@ class _FlashcardqaPageState extends State<FlashcardqaPage> {
           CupertinoDialogAction(
               child: Text('OK'),
               onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/9', ModalRoute.withName('/Home'))),
+                  context, '/8', ModalRoute.withName('/Home'))),
           CupertinoDialogAction(
               child: Text('Exit'),
               onPressed: () => Navigator.pushNamedAndRemoveUntil(
