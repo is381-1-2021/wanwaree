@@ -210,7 +210,7 @@ class _FlashcardqaPageState extends State<FlashcardqaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('eng'),
+        title: Text('Flashcard'),
       ),
       body: Center(child: body),
       floatingActionButton: FloatingActionButton(

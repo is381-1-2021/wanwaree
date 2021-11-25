@@ -85,7 +85,7 @@ class _ListfcPageState extends State<ListfcPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HTTP Listfcs'),
+        title: Text('Flashcard'),
       ),
       body: Center(child: body),
       floatingActionButton: FloatingActionButton(

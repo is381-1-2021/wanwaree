@@ -88,7 +88,7 @@ class _StackofcardPageState extends State<StackofcardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HTTP Stackofcards'),
+        title: Text('Flashcard'),
       ),
       body: Center(child: body),
       floatingActionButton: FloatingActionButton(
