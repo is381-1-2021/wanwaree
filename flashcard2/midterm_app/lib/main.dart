@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Nunito",
       ),
       debugShowCheckedModeBanner: false,
-      home: MyHomePage3(),
+      home: LoginPage2(),
       routes: {
         '/Login': (context) => LoginPage2(),
         '/Home': (context) => MyHomePage3(),

@@ -11,7 +11,7 @@ class Stackofcard {
   ) {
     return Stackofcard(
       json['name'] as String,
-      json['subject'] as String,
+      json['subject'] as String, //ใส่ไอดีเพิ่ม
     );
   }
 }

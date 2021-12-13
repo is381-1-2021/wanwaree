@@ -1,13 +1,31 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:midterm_app/model/form_model.dart';
+import 'package:midterm_app/pages/cal.dart';
 import 'package:midterm_app/pages/form.dart';
 import 'package:midterm_app/pages/formemail.dart';
 import 'package:midterm_app/pages/blank_page.dart';
 import 'package:flutter/material.dart';
+import 'package:midterm_app/pages/history.dart';
+import 'package:midterm_app/pages/history_page.dart';
+import 'package:provider/provider.dart';
 import 'pages/flash_card.dart';
 import 'pages/profile.dart';
 //import 'pages/pages_name.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => FormModel(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,14 +40,17 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(color: Colors.black87),
         ),
       ),
-      initialRoute: '/5',
+      initialRoute: '/8',
       routes: <String, WidgetBuilder>{
-        '/1': (context) => Profile(),
+        /*'/1': (context) => Profile(),
         '/2': (context) => FlashCard(),
         '/3': (context) => EditProfile(),
         '/4': (context) => EditEmail(),
         '/5': (context) => All(),
-        '/6': (context) => BlankPage(),
+        '/6': (context) => BlankPage(),*/
+        '/8': (context) => CalPage(),
+        '/9': (context) => HistoryPage(),
+        '/10': (context) => MemoryPage(),
       },
     );
   }

@@ -364,7 +364,6 @@ class CardTile extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: Colors.red[800]),
                     ),
-                    Icon(Icons.favorite)
                   ],
                 ),
               ),

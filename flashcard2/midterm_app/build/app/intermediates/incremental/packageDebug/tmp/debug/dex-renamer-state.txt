@@ -1,4 +1,4 @@
-#Fri Nov 26 02:08:36 ICT 2021
+#Fri Nov 26 13:18:42 ICT 2021
 base.2=C\:\\DevOps\\workspace\\flashcard2\\midterm_app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.2=classes3.dex
 base.1=C\:\\DevOps\\workspace\\flashcard2\\midterm_app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
